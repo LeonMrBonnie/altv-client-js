@@ -660,6 +660,23 @@ static void TakeScreenshotGameOnly(const v8::FunctionCallbackInfo<v8::Value> &in
 	V8_RETURN(persistent.Get(isolate)->GetPromise());
 }
 
+static void GetHeapStatistics(const v8::FunctionCallbackInfo<v8::Value>& info)
+{
+	V8_GET_ISOLATE_CONTEXT();
+
+	v8::HeapStatistics heapStats;
+	isolate->GetHeapStatistics(&heapStats);
+	V8_NEW_OBJECT(stats);
+	V8_OBJECT_SET_INTEGER(stats, "heapSizeLimit", heapStats.heap_size_limit());
+	V8_OBJECT_SET_INTEGER(stats, "totalHeapSize", heapStats.total_heap_size());
+	V8_OBJECT_SET_INTEGER(stats, "usedHeapSize", heapStats.used_heap_size());
+	V8_OBJECT_SET_INTEGER(stats, "mallocedMemory", heapStats.malloced_memory());
+	V8_OBJECT_SET_INTEGER(stats, "peakMallocedMemory", heapStats.peak_malloced_memory());
+	V8_OBJECT_SET_INTEGER(stats, "totalHeapSize", heapStats.total_heap_size());
+
+	V8_RETURN(stats);
+}
+
 extern V8Class v8Vector3,
 	v8RGBA,
 	v8BaseObject,
@@ -776,4 +793,5 @@ extern V8Module altModule(
 
 		V8Helpers::RegisterFunc(exports, "takeScreenshot", &TakeScreenshot);
 		V8Helpers::RegisterFunc(exports, "takeScreenshotGameOnly", &TakeScreenshotGameOnly);
+		V8Helpers::RegisterFunc(exports, "getHeapStats", &GetHeapStatistics);
 	});
