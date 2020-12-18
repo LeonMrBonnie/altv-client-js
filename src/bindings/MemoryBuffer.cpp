@@ -18,7 +18,7 @@
 static void Constructor(const v8::FunctionCallbackInfo<v8::Value>& info)
 {
 	v8::Isolate* isolate = info.GetIsolate();
-	auto ctx = isolate->GetEnteredContext();
+	auto ctx = isolate->GetEnteredOrMicrotaskContext();
 
 	V8_CHECK(info.IsConstructCall(), "MemoryBuffer constructor is not a function");
 	V8_CHECK(info.Length() == 1, "new MemoryBuffer(...) expects 1 arg");
@@ -61,7 +61,7 @@ static void FreeBuffer(const v8::FunctionCallbackInfo<v8::Value>& info)
 {
 	v8::Isolate* isolate = v8::Isolate::GetCurrent();
 
-	V8ResourceImpl* resource = V8ResourceImpl::Get(isolate->GetEnteredContext());
+	V8ResourceImpl* resource = V8ResourceImpl::Get(isolate->GetEnteredOrMicrotaskContext());
 	V8_CHECK(resource, "Invalid resource");
 
 	uint8_t* memory = (uint8_t*)info.This()->GetAlignedPointerFromInternalField(0);
@@ -79,7 +79,7 @@ static void GetAddress(const v8::FunctionCallbackInfo<v8::Value>& info)
 {
 	v8::Isolate* isolate = v8::Isolate::GetCurrent();
 
-	V8ResourceImpl* resource = V8ResourceImpl::Get(isolate->GetEnteredContext());
+	V8ResourceImpl* resource = V8ResourceImpl::Get(isolate->GetEnteredOrMicrotaskContext());
 	V8_CHECK(resource, "Invalid resource");
 
 	uintptr_t memory = (uintptr_t)info.This()->GetAlignedPointerFromInternalField(0);
@@ -90,9 +90,9 @@ template <typename T>
 static void GetDataOfType(const v8::FunctionCallbackInfo<v8::Value>& info)
 {
 	v8::Isolate* isolate = v8::Isolate::GetCurrent();
-	auto ctx = isolate->GetEnteredContext();
+	auto ctx = isolate->GetEnteredOrMicrotaskContext();
 
-	V8ResourceImpl* resource = V8ResourceImpl::Get(isolate->GetEnteredContext());
+	V8ResourceImpl* resource = V8ResourceImpl::Get(isolate->GetEnteredOrMicrotaskContext());
 	V8_CHECK(resource, "Invalid resource");
 
 	bool isString = false;
@@ -115,7 +115,7 @@ static void GetDataOfType(const v8::FunctionCallbackInfo<v8::Value>& info)
 		strLength = info[1]->Uint32Value(ctx).ToChecked();
 
 	uint8_t* memory = (uint8_t*)info.This()->GetAlignedPointerFromInternalField(0);
-	uint16_t size = info.This()->GetInternalField(1)->Uint32Value(isolate->GetEnteredContext()).ToChecked();
+	uint16_t size = info.This()->GetInternalField(1)->Uint32Value(isolate->GetEnteredOrMicrotaskContext()).ToChecked();
 	if (memory == nullptr || size == 0)
 	{
 		info.GetReturnValue().Set(v8::Null(isolate));

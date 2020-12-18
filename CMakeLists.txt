@@ -50,7 +50,7 @@ GroupSources(${PROJECT_SOURCE_DIR}/src "Source Files")
 
 include_directories(
   ${ALTV_JS_CPP_SDK}
-  ${ALTV_JS_DL_DEPS}/include
+  D:/Garage/NodeJS/projects/alt/altv-client-js/v8/include
 )
 
 set(ALTV_JS_LINKS
@@ -59,7 +59,14 @@ set(ALTV_JS_LINKS
   DbgHelp.lib
 
   # V8
-  ${ALTV_JS_DL_DEPS}/lib/$<IF:$<CONFIG:Debug>,Debug,Release>/v8_monolith.lib
+  # ${ALTV_JS_DL_DEPS}/lib/$<IF:$<CONFIG:Debug>,Debug,Release>/v8_monolith.lib
+   ${ALTV_JS_DL_DEPS}/lib/$<IF:$<CONFIG:Debug>,Debug,Release>/icui18n.dll.lib
+   ${ALTV_JS_DL_DEPS}/lib/$<IF:$<CONFIG:Debug>,Debug,Release>/icuuc.dll.lib
+  # ${ALTV_JS_DL_DEPS}/lib/$<IF:$<CONFIG:Debug>,Debug,Release>/libc++.dll.lib
+   ${ALTV_JS_DL_DEPS}/lib/$<IF:$<CONFIG:Debug>,Debug,Release>/v8.dll.lib
+   ${ALTV_JS_DL_DEPS}/lib/$<IF:$<CONFIG:Debug>,Debug,Release>/v8_libbase.dll.lib
+   ${ALTV_JS_DL_DEPS}/lib/$<IF:$<CONFIG:Debug>,Debug,Release>/v8_libplatform.dll.lib
+   ${ALTV_JS_DL_DEPS}/lib/$<IF:$<CONFIG:Debug>,Debug,Release>/zlib.dll.lib
 )
 
 set(ALTV_JS_DEFS

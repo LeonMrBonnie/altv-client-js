@@ -64,7 +64,7 @@ static void PushArg(alt::Ref<alt::INative::Context> scrCtx, alt::INative::Type a
 {
 	using ArgType = alt::INative::Type;
 
-	v8::Local<v8::Context> v8Ctx = isolate->GetEnteredContext();
+	v8::Local<v8::Context> v8Ctx = isolate->GetEnteredOrMicrotaskContext();
 	
 	switch (argType)
 	{
@@ -137,7 +137,7 @@ static void PushPointerReturn(alt::INative::Type argType, v8::Local<v8::Array> r
 		alt::INative::Vector3 *val = reinterpret_cast<alt::INative::Vector3 *>(&pointers[pointersCount]);
 		pointersCount += 3;
 
-		v8::Local<v8::Context> v8Ctx = isolate->GetEnteredContext();
+		v8::Local<v8::Context> v8Ctx = isolate->GetEnteredOrMicrotaskContext();
 		v8::Local<v8::Object> vec = v8::Object::New(isolate);
 
 		V8::DefineOwnProperty(isolate, v8Ctx, vec, "x", v8::Number::New(isolate, val->x), v8::PropertyAttribute::ReadOnly);
@@ -154,7 +154,7 @@ static v8::Local<v8::Value> GetReturn(alt::Ref<alt::INative::Context> scrCtx, al
 {
 	using ArgType = alt::INative::Type;
 
-	v8::Local<v8::Context> v8Ctx = isolate->GetEnteredContext();
+	v8::Local<v8::Context> v8Ctx = isolate->GetEnteredOrMicrotaskContext();
 
 	switch (retnType)
 	{
