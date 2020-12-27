@@ -43,7 +43,7 @@ static void GetForHandlingNameDeprecated(const v8::FunctionCallbackInfo<v8::Valu
 	};
 
 	extern V8Class v8HandlingData;
-	V8_RETURN(v8HandlingData.New(isolate->GetEnteredContext(), args));
+	V8_RETURN(v8HandlingData.New(isolate->GetEnteredOrMicrotaskContext(), args));
 
 	Log::Warning << "alt.HandlingData.getForModel is deprecated and will be removed in the future. Please use alt.HandlingData.getForHandlingName" << Log::Endl;
 }
